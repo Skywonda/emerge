@@ -17,7 +17,7 @@ export function Signin() {
             setSuccess("")
             setError("Enter all fields")
         }
-        fetch('https://devemerge.herokuapp.com/auth/login', {
+        fetch('http://localhost:8000/auth/login', {
             method: "post",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

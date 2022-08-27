@@ -17,7 +17,7 @@ export function Signup() {
         if (username === "" || email === "" || password === "") {
             setError("Enter all fields")
         }
-        fetch('https://devemerge.herokuapp.com/users', {
+        fetch('http://localhost:8000/users', {
             method: "post",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -37,11 +37,11 @@ export function Signup() {
                 else if (data.statusCode === 400) {
                     setError("Enter a valid details")
                 }
-                else if (data.statusCode === 201) {
-                    setError("")
-                    setSuccess("Registration Successful!")
+                setError("")
+                setSuccess("Baba oya pass, gettat of here and login!")
+                setTimeout(() => {
                     navigate('/login')
-                }
+                }, 3000);
             })
     }
 
