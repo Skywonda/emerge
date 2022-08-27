@@ -25,7 +25,7 @@ export function Dashboard() {
 
 
     useEffect(() => {
-        fetch('http://localhost:8000/posts', options)
+        fetch('https://devemerge.herokuapp.com/posts', options)
             .then((response) => {
                 return response.json()
             })
@@ -39,7 +39,7 @@ export function Dashboard() {
 
 
     useEffect(() => {
-        fetch('http://localhost:8000/users/me', options)
+        fetch('https://devemerge.herokuapp.com/users/me', options)
             .then((response) => {
                 return response.json()
             })
@@ -51,7 +51,7 @@ export function Dashboard() {
     }, [])
 
     function handlePost() {
-        fetch('http://localhost:8000/posts', {
+        fetch('https://devemerge.herokuapp.com/posts', {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',

@@ -17,7 +17,7 @@ export function Signup() {
         if (username === "" || email === "" || password === "") {
             setError("Enter all fields")
         }
-        fetch('http://localhost:8000/users', {
+        fetch('https://devemerge.herokuapp.com/users', {
             method: "post",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

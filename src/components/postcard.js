@@ -1,6 +1,25 @@
-import { DeletePost } from "../store/homeContext"
+// import { useNavigate } from "react-router-dom"
+
 
 export function Postcard(props) {
+    const token = localStorage.getItem("accessToken")
+
+    function deletePost() {
+        fetch(`https://devemerge.herokuapp.com/posts/${props.id}`, {
+            method: "delete",
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        }).then((response) => {
+            return response.json()
+        })
+            .then(() => {
+                setTimeout(() => {
+                    window.location.reload()
+                }, 1000);
+            })
+    }
     return (
         <div>
             <div className="card mb-2">
@@ -22,7 +41,7 @@ export function Postcard(props) {
                 <footer className="card-footer">
                     {/* <a href="#" className="card-footer-item">Save</a> */}
                     {/* <a href="#" className="card-footer-item">Edit</a> */}
-                    <button href="#" className="card-footer-item" onClick={() => DeletePost(props.id)} to="/">Delete</button>
+                    <button href="#" className="card-footer-item" onClick={deletePost} to="/">Delete</button>
                 </footer>
             </div>
         </div>
