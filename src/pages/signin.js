@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Navbar } from "../components/navbar"
 import "./sign.css"
 import { useNavigate } from "react-router-dom"
+import { BASE_URL } from "../store/url"
 
 export function Signin() {
 
@@ -17,7 +18,7 @@ export function Signin() {
             setSuccess("")
             setError("Enter all fields")
         }
-        fetch('https://devemerge.herokuapp.com/auth/login', {
+        fetch(BASE_URL + '/auth/login', {
             method: "post",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

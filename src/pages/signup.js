@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Navbar } from "../components/navbar"
 import "./sign.css"
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../store/url";
 
 
 export function Signup() {
@@ -16,8 +17,9 @@ export function Signup() {
     function handleSubmit() {
         if (username === "" || email === "" || password === "") {
             setError("Enter all fields")
+            return
         }
-        fetch('https://devemerge.herokuapp.com/users', {
+        fetch(BASE_URL + '/users', {
             method: "post",
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -30,18 +32,22 @@ export function Signup() {
                 return response.json()
             })
             .then((data) => {
-                if (data.error === "Conflict") {
-                    setSuccess("")
-                    setError("This user already exist")
+                switch (data.statusCode) {
+                    case 409:
+                        setSuccess("")
+                        setError("This user already exist")
+                        break
+                    case 400:
+                        setSuccess("")
+                        setError("Enter a valid details")
+                        break
+                    default:
+                        setError("")
+                        setSuccess("Baba oya pass, gettat of here and login!")
+                        setTimeout(() => {
+                            navigate('/login')
+                        }, 3000);
                 }
-                else if (data.statusCode === 400) {
-                    setError("Enter a valid details")
-                }
-                setError("")
-                setSuccess("Baba oya pass, gettat of here and login!")
-                setTimeout(() => {
-                    navigate('/login')
-                }, 3000);
             })
     }
 

@@ -1,11 +1,11 @@
 // import { useNavigate } from "react-router-dom"
-
+import { BASE_URL } from "../store/url";
 
 export function Postcard(props) {
     const token = localStorage.getItem("accessToken")
 
     function deletePost() {
-        fetch(`https://devemerge.herokuapp.com/posts/${props.id}`, {
+        fetch(BASE_URL + `/posts/${props.id}`, {
             method: "delete",
             headers: {
                 'Content-Type': 'application/json',
@@ -14,7 +14,10 @@ export function Postcard(props) {
         }).then((response) => {
             return response.json()
         })
-            .then(() => {
+            .then((data) => {
+                if (data.statusCode === 403) {
+                    alert("You are not the owner of this post, please rest!")
+                }
                 setTimeout(() => {
                     window.location.reload()
                 }, 1000);
@@ -22,7 +25,7 @@ export function Postcard(props) {
     }
     return (
         <div>
-            <div className="card mb-2">
+            <div className="card">
                 <header className="card-header">
                     <p className="card-header-title">
                         {props.name} {props.created}
@@ -39,9 +42,9 @@ export function Postcard(props) {
                     </div>
                 </div>
                 <footer className="card-footer">
-                    {/* <a href="#" className="card-footer-item">Save</a> */}
-                    {/* <a href="#" className="card-footer-item">Edit</a> */}
-                    <button href="#" className="card-footer-item" onClick={deletePost} to="/">Delete</button>
+                    {/* <button href="#" className="card-footer-item">Save</button> */}
+                    <button href="#" className="card-footer-item">Edit</button>
+                    <button href="#" className="card-footer-item" onClick={props.id ? deletePost : 'cant delete'} to="/">Delete</button>
                 </footer>
             </div>
         </div>

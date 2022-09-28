@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Postcard } from "./postcard"
+import { BASE_URL } from "../store/url"
 
 
 export function Dashboard() {
@@ -25,21 +26,28 @@ export function Dashboard() {
 
 
     useEffect(() => {
-        fetch('https://devemerge.herokuapp.com/posts', options)
+        setLoading(true)
+        setLoggedIn(false)
+        fetch(BASE_URL + "/posts", options)
             .then((response) => {
                 return response.json()
             })
             .then((data) => {
                 setPosts(data)
+                console.log(post)
                 setLoggedIn(true)
                 setLoading(false)
+            })
+            .catch((error) => {
+                console.log(error)
+                setLoading(false)
+                setLoggedIn(false)
             })
         // eslint-disable-next-line
     }, [])
 
-
     useEffect(() => {
-        fetch('https://devemerge.herokuapp.com/users/me', options)
+        fetch(BASE_URL + '/users/me', options)
             .then((response) => {
                 return response.json()
             })
@@ -51,7 +59,7 @@ export function Dashboard() {
     }, [])
 
     function handlePost() {
-        fetch('https://devemerge.herokuapp.com/posts', {
+        fetch(BASE_URL + '/posts', {
             method: 'post',
             headers: {
                 'Content-Type': 'application/json',
@@ -90,15 +98,18 @@ export function Dashboard() {
                     <textarea className="textarea" placeholder="Write Something" onChange={(e) => setPost(e.target.value)}></textarea>
                     <button className="button is-light" onClick={handlePost}>Post</button>
                 </div>
-                {posts.map((post) => (
-                    <Postcard
-                        id={post.id}
-                        name={post.author.username}
-                        content={post.content}
-                        key={post.id}
-                        created={post.create_at}
-                    />
-                ))
+
+                {loading ? <div className="container content">loading...</div> :
+
+                    posts.map((post) => (
+                        <Postcard
+                            id={post.id}
+                            name={post.author.username}
+                            content={post.content}
+                            key={post.id}
+                            created={post.create_at}
+                        />
+                    ))
                 }
             </section>
             <button className="button is-danger is-light" onClick={handleLogout}>Logout</button>
